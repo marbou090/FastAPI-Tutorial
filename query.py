@@ -4,8 +4,10 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get("/items/{item_id}")
-async def read_item(item_id: str, q: Optional[str]= None, short: bool= False):
+@app.get("/users/{user_id}/items/{item_id}")
+async def read_user_item(
+    user_id: int, item_id: str, q: Optional[str]= None, short: bool= False
+    ):
     """
     関数パラメータ q はオプショナルとなり、デフォルトでは None 
     この場合、以下にアクセスすると:
@@ -23,7 +25,7 @@ async def read_item(item_id: str, q: Optional[str]= None, short: bool= False):
     だと
     {"item_id":"maru","q":"hoge","description":"This is an amazing item that has a long description"}
     """
-    item = {"item_id": item_id}
+    item = {"item_id": item_id, "owner_id": user_id}
     if q:
         item.update({"q":q})
     if not short:
