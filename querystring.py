@@ -1,14 +1,12 @@
-from typing import Optional
+from typing import List, Optional
 from fastapi import FastAPI, Query
 
 app = FastAPI()
 
 @app.get("/items/")
-async def read_items(q: Optional[str]= Query(None, min_length=3 ,max_length=50, regex="^fixedquery$")):
+async def read_items(q: Optional[List[str]]= Query(["foo","bar"])):
     """
-    オプショナルなqはデフォルトでNone, 渡された場合は５０文字を越してはいけない
+    オプショナルなqはデフォルトでNone, 複数渡せる
     """
-    results= {"items": [{"item_id": "Foo"},{"item_id": "Bar"}]}
-    if q:
-        results.update({"q": q})
-    return results
+    query_items = {"q": q}
+    return query_items
